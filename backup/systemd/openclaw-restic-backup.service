@@ -1,0 +1,6 @@
+[Unit]
+Description=OpenClaw encrypted restic backup
+
+[Service]
+Type=oneshot
+ExecStart=%h/.openclaw/workspace/backup/run-restic-backup.sh

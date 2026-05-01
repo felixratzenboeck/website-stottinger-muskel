@@ -16,6 +16,11 @@ fi
 STAGE_DIR="$HOME/.local/state/openclaw-backup/staging"
 LOG_DIR="$HOME/.local/state/openclaw-backup"
 mkdir -p "$LOG_DIR"
+exec 9>"$LOG_DIR/restic.lock"
+if ! flock -n 9; then
+  echo "restic backup already running" >&2
+  exit 0
+fi
 "$HOME/.openclaw/workspace/backup/prepare-openclaw-backup.sh" "$STAGE_DIR"
 
 restic backup \
@@ -33,3 +38,5 @@ restic forget --prune \
   --keep-weekly 8 \
   --keep-monthly 6 \
   >> "$LOG_DIR/latest-backup.log" 2>&1
+
+"$HOME/.openclaw/workspace/backup/export-drive-overview.sh" >> "$LOG_DIR/latest-backup.log" 2>&1
