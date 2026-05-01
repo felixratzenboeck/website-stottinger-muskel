@@ -43,6 +43,21 @@
 - Wenn Browser-Automation mit bestehender Session/Logins gewünscht ist, **Brave zuerst bevorzugen**.
 - Wenn Brave auf dem aktuellen Host/Target nicht verfügbar oder nicht verbunden ist, klar sagen und erst dann auf eine andere Browser-Option ausweichen.
 
+## TV Shortcut API
+
+- Für iPhone/Mac-Shortcuts läuft jetzt ein kleiner TV-Shortcut-Server auf der Tailscale-IP:
+  - Basis: `http://100.125.38.70:8766/`
+- Konfiguration/Token: `/home/leo/.openclaw/workspace/tools/tv_shortcuts_config.json`
+- Übersicht der fertigen URLs: `/home/leo/.openclaw/workspace/tools/tv_shortcuts_urls.txt`
+- Dienst: `leo-tv-shortcuts.service`
+- Weboberfläche mit Buttons/Slidern existiert ebenfalls; gleiche Token-URL wie in `tv_shortcuts_urls.txt`.
+- Endpunkte:
+  - `/api/power/on?token=...`
+  - `/api/power/off?token=...`
+  - `/api/set?token=...&name=contrast&value=NN`
+  - `/api/set?token=...&name=video_contrast&value=NN`
+- Sicherheitsstandard: nur Tailscale-IP verwenden, nicht LAN-IP.
+
 ## Boxen / AirPlay
 
 - Debian-PC ist jetzt als **AirPlay-Empfänger** für Felixs MacBook eingerichtet.

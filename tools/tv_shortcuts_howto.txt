@@ -1,0 +1,27 @@
+TV Shortcuts – iPhone / Mac
+
+Basis-Seite:
+http://100.125.38.70:8766/?token=6kW73YE3RjRnPRHw4GL78jQL8Fpw05eJ
+
+Direkte URLs:
+- Fernseher an
+  http://100.125.38.70:8766/api/power/on?token=6kW73YE3RjRnPRHw4GL78jQL8Fpw05eJ
+- Fernseher aus
+  http://100.125.38.70:8766/api/power/off?token=6kW73YE3RjRnPRHw4GL78jQL8Fpw05eJ
+- Kontrast setzen
+  http://100.125.38.70:8766/api/set?token=6kW73YE3RjRnPRHw4GL78jQL8Fpw05eJ&name=contrast&value=
+- Videokontrast setzen
+  http://100.125.38.70:8766/api/set?token=6kW73YE3RjRnPRHw4GL78jQL8Fpw05eJ&name=video_contrast&value=
+
+iPhone Shortcut:
+1. Kurzbefehle öffnen
+2. Neuer Kurzbefehl
+3. Aktion: "Inhalt von URL abrufen"
+4. URL einfügen
+5. Für Kontrast/Videokontrast davor "Nach Eingabe fragen" (Zahl 0-100)
+6. Die eingegebene Zahl ans URL-Ende hinter `value=` hängen
+7. Zum Home-Screen hinzufügen
+
+Mac:
+- gleiche URL im Browser öffnen oder als Shortcut / Bookmark speichern
+- die Basis-Seite hat schon Buttons + Slider
