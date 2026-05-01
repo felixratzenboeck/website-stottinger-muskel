@@ -43,6 +43,18 @@
 - Wenn Browser-Automation mit bestehender Session/Logins gewünscht ist, **Brave zuerst bevorzugen**.
 - Wenn Brave auf dem aktuellen Host/Target nicht verfügbar oder nicht verbunden ist, klar sagen und erst dann auf eine andere Browser-Option ausweichen.
 
+## Boxen / AirPlay
+
+- Debian-PC ist jetzt als **AirPlay-Empfänger** für Felixs MacBook eingerichtet.
+- Sichtbarer Empfängername im Netzwerk: **`Leo Boxen`**
+- Dienste: `shairport-sync` + `avahi-daemon`
+- Audio-Ausgabe: Onboard-Analogausgang `hw:0,0` (ALC887-VD Analog)
+- Hilfsskript: `/home/leo/.openclaw/workspace/tools/airplay_boxen.sh`
+  - `status`
+  - `verbinden` / `connect` / `restart`
+  - `trennen` / `disconnect` / `stop`
+- Wenn Felix sagt **"Boxen verbinden"**, zuerst das Hilfsskript mit `verbinden` nutzen und danach kurz den Status prüfen.
+
 ## Gemini CLI
 
 - Gemini CLI ist installiert als `gemini`.

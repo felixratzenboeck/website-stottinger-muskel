@@ -118,8 +118,17 @@ def ambilight_status():
 
 
 def power_off():
+    # Keep Ambilight strictly opt-in. When we power the TV off,
+    # also shut Ambilight down so it does not linger after standby.
+    try:
+        ambilight_power(False)
+    except Exception:
+        pass
     post('/powerstate', {'powerstate': 'Off'})
-    return power_status()
+    return {
+        'power': power_status(),
+        'ambilight_power': get('/ambilight/power').get('power', 'unknown')
+    }
 
 
 def power_on():
@@ -275,7 +284,7 @@ def handle_natural(text):
         name = 'video_contrast' if 'video' in q else 'contrast'
         return {name: set_value(name, value)}
     if any(x in q for x in [' tv aus', ' fernseher aus', ' ausschalten', ' ausschalte', ' ausmachen', ' aus ']) or q in ['tv aus', 'fernseher aus', 'aus']:
-        return {'power': power_off()}
+        return power_off()
     if any(x in q for x in [' tv an', ' fernseher an', ' einschalten', ' einschalte', ' anmachen', ' an ']) or q in ['tv an', 'fernseher an', 'an']:
         return {'power': power_on()}
     if any(x in q for x in ['youtube', 'dazn', 'the zone', 'zone', 'netflix', 'spotify']):
@@ -304,7 +313,7 @@ def main(argv):
     if argv[1] == 'power' and len(argv) >= 3:
         action = norm(' '.join(argv[2:]))
         if action in {'off', 'aus'}:
-            print(json.dumps({'power': power_off()}, ensure_ascii=False))
+            print(json.dumps(power_off(), ensure_ascii=False))
             return
         if action in {'on', 'an', 'ein'}:
             print(json.dumps({'power': power_on()}, ensure_ascii=False))
