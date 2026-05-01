@@ -7,6 +7,11 @@ if [[ ! -f "$ENV_FILE" ]]; then
 fi
 # shellcheck disable=SC1090
 source "$ENV_FILE"
+: "${RESTIC_REPOSITORY:?Missing RESTIC_REPOSITORY}"
+if [[ -z "${RESTIC_PASSWORD_FILE:-}" && -z "${RESTIC_PASSWORD:-}" ]]; then
+  echo "Set RESTIC_PASSWORD_FILE or RESTIC_PASSWORD in $ENV_FILE" >&2
+  exit 2
+fi
 
 STAGE_DIR="$HOME/.local/state/openclaw-backup/staging"
 LOG_DIR="$HOME/.local/state/openclaw-backup"

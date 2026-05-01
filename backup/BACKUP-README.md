@@ -7,8 +7,9 @@
 
 ## Local files
 - Backup env: `~/.config/openclaw-backup/env`
+- Restic password file: `~/.config/openclaw-backup/restic-password`
 - Backup logs: `~/.local/state/openclaw-backup/latest-backup.log`
-- Excludes: `~/ .openclaw/workspace/backup/restic-excludes.txt`
+- Excludes: `~/.openclaw/workspace/backup/restic-excludes.txt`
 - Manual backup: `~/.openclaw/workspace/backup/run-restic-backup.sh`
 - Manual restore: `~/.openclaw/workspace/backup/restore-openclaw-backup.sh`
 
@@ -21,7 +22,7 @@
 
 ## Restore on a new machine
 1. Install `restic` and `rclone`
-2. Restore `~/.config/rclone/rclone.conf` and `~/.config/openclaw-backup/env` from Bitwarden/manual notes
+2. Restore `~/.config/rclone/rclone.conf`, `~/.config/openclaw-backup/env`, and `~/.config/openclaw-backup/restic-password` from Bitwarden/manual notes
 3. Run `~/.openclaw/workspace/backup/restore-openclaw-backup.sh /desired/restore/path`
 4. Copy restored files back into `~/.openclaw/`
 5. Reinstall OpenClaw if needed
