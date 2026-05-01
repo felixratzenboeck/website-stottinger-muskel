@@ -1,0 +1,29 @@
+# Local/runtime state
+.openclaw/
+state/
+tmp/
+memory/*.sqlite
+
+# Dependencies/build outputs
+**/node_modules/
+**/.next/
+**/__pycache__/
+**/dist/
+
+# Sensitive files
+*.key
+*.pem
+*.p12
+*.pfx
+*.secret
+*.token
+*.db
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+**/.env
+**/.env.*
+**/spotify-token.json
+
+# Noise
+.DS_Store
