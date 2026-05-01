@@ -16,7 +16,7 @@ fi
         git -C "$HOME/.openclaw/workspace" commit -m "autosync: $(date '+%Y-%m-%d %H:%M')"
       fi
       if git -C "$HOME/.openclaw/workspace" remote get-url origin >/dev/null 2>&1; then
-        git -C "$HOME/.openclaw/workspace" push origin main
+        git -C "$HOME/.openclaw/workspace" push origin main || echo "git push failed, continuing with backup"
       fi
     else
       echo "workspace git tree clean"

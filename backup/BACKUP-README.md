@@ -34,8 +34,8 @@
 
 ## Automation
 - `openclaw-local-backup.timer` → local fallback repo every 6 hours
-- `openclaw-restic-backup.timer` → cloud backup every 6 hours
 - `openclaw-autosync.timer` → every 30 minutes, commits/pushes workspace changes and refreshes cloud backup + Drive overview
+- `openclaw-restic-backup.service` stays available for manual one-off cloud runs, but the timer is intentionally disabled to avoid duplicate work
 
 ## Restore on a new machine
 1. Install `restic` and `rclone`

@@ -35,7 +35,8 @@ description: Set up, verify, repair, and operate Leo's OpenClaw backup stack: en
 
 ## Automation model
 - local fallback timer stays enabled
-- cloud backup timer stays enabled
+- autosync timer stays enabled
+- manual cloud backup service remains available, but the old cloud timer should stay disabled to avoid duplicate work
 - autosync timer runs periodically and:
   1. commits workspace changes if present
   2. pushes to GitHub if `origin` exists

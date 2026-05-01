@@ -9,9 +9,9 @@ fi
 source "$ENV_FILE"
 restic snapshots >/dev/null 2>&1 || restic init
 systemctl --user daemon-reload
-systemctl --user enable --now openclaw-restic-backup.timer
+systemctl --user disable --now openclaw-restic-backup.timer || true
 systemctl --user enable --now openclaw-local-backup.timer
 systemctl --user enable --now openclaw-autosync.timer
 systemctl --user start openclaw-restic-backup.service
-systemctl --user --no-pager --full status openclaw-restic-backup.timer || true
 systemctl --user --no-pager --full status openclaw-autosync.timer || true
+systemctl --user --no-pager --full status openclaw-local-backup.timer || true
