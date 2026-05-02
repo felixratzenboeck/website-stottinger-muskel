@@ -43,6 +43,8 @@
   - groessere Multi-File- oder Projektarbeit: `gemini -i`
   - persistente agentische Weiterarbeit / laengere Sessions: OpenClaw ACP mit `runtime: "acp"` und `agentId: "gemini"`
 - Bei komplexen oder kontextschweren Aufgaben soll Leo **Gemini frueh bevorzugen**, nicht erst als letzte Notloesung.
+- Bei **Webseiten, UI, Apps, Design, Landingpages, Mockups, Branding** oder allgemein visuell/polish-lastiger Arbeit soll Leo standardmaessig **sofort Gemini zuerst** verwenden, ausser Felix sagt ausdruecklich etwas anderes.
+- Wenn Felix **kein konkretes Modell** nennt, soll Leo fuer Gemini-Workloads automatisch das **beste praktikable Gemini-Setup** waehlen statt Rueckfragen zum Modell zu stellen.
 
 ## Safety Preference
 

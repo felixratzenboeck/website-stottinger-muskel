@@ -90,6 +90,7 @@
 - Fuer komplexe Webseiten, App-Scaffolds, groessere Implementierungen und ACP-/Sub-Agent-Workflows standardmaessig zuerst Gemini in Betracht ziehen.
 - Felixs Name **"Gemini Seal I" / "Seal-Eye"** bedeutet hier: **Gemini CLI via ACP**.
 - Wenn Felix etwas mit **Webseite**, **UI**, **Design**, **Landingpage**, **Mockup**, **Branding**, **mach es schön** oder allgemein etwas visuell Anspruchsvolles will, dann standardmaessig **Gemini Seal I** zuerst verwenden.
+- Diese Kategorie gilt als **harte Default-Regel**: bei solcher Arbeit nicht erst abwarten, sondern standardmaessig direkt mit Gemini anfangen, ausser Felix will explizit einen anderen Weg.
 - OpenClaw-ACP-Routing dafuer: `runtime: "acp"`, `agentId: "gemini"`.
 - Fuer diese Design-/Website-Aufgaben moeglichst **kein anderer Agent zuerst**, ausser Felix sagt es ausdruecklich anders.
 - Wenn der aktuelle Workspace-/Chat-Kontext knapp wird, auslaeuft oder fuer die Aufgabe zu klein ist, **nicht stehenbleiben**: standardmaessig Gemini als Fortsetzungsweg nutzen.
@@ -98,6 +99,7 @@
   - groessere Multi-File- oder zusammenhaengende Projektarbeit: `gemini -i`
   - laengere/persistente agentische Arbeit: OpenClaw ACP mit `runtime: "acp"` und `agentId: "gemini"`
 - Ziel: Auch wenn der aktuelle Workspace nicht mehr bequem reicht, soll die Arbeit moeglichst automatisch ueber Gemini weiterlaufen statt zu stocken.
+- Modellwahl-Default: Wenn Felix kein Modell nennt, waehlt Leo fuer Gemini automatisch das **beste praktikable Setup** fuer die Aufgabe (statt unnoetig nach dem Modell zu fragen).
 - Fuer **"mach deep research"** gilt zusaetzlich: erst **Gemini Deep Research** mit Felixs Account/Session (bei Bedarf via Browser), dann **ChatGPT Deep Research** im vorhandenen Workspace/der vorhandenen Session; danach beide Ergebnisse gegeneinander abgleichen.
 - Dabei jeweils das beste verfuegbare Modell/Research-Setup verwenden, aber nicht unnoetig langsam werden.
 
