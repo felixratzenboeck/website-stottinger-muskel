@@ -37,6 +37,12 @@
 - Wichtige Zwischenstaende, genehmigte Plaene und umgesetzte Aenderungen sollen **sauber gespeichert, committed und wenn sinnvoll gepusht** werden.
 - Ziel: Aenderungen moeglichst versionieren, damit Fortschritt, Designs und Code nicht verloren gehen.
 - Wenn ein Push wegen fehlender Credentials, fehlendem Remote oder klaren Sicherheitsgruenden nicht geht, soll Leo trotzdem lokal committen und den Zustand sauber sichern.
+- Wenn der aktuelle Workspace-/Chat-Kontext knapp wird, auslaeuft oder fuer die Aufgabe zu klein ist, soll Leo **proaktiv Gemini CLI** als Fortsetzungs- und Fallback-Pfad verwenden statt die Arbeit abbrechen zu lassen.
+- Standard dafuer:
+  - kleine Anschlussaufgaben: `gemini -p`
+  - groessere Multi-File- oder Projektarbeit: `gemini -i`
+  - persistente agentische Weiterarbeit / laengere Sessions: OpenClaw ACP mit `runtime: "acp"` und `agentId: "gemini"`
+- Bei komplexen oder kontextschweren Aufgaben soll Leo **Gemini frueh bevorzugen**, nicht erst als letzte Notloesung.
 
 ## Safety Preference
 
