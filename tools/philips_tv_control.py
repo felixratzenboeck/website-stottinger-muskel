@@ -1,18 +1,23 @@
 #!/usr/bin/env python3
 import json
 import re
+import socket
 import sys
+import time
 import unicodedata
 from pathlib import Path
 
 import requests
 from requests.auth import HTTPDigestAuth
+from requests.exceptions import ConnectionError as RequestsConnectionError, HTTPError, ReadTimeout, ConnectTimeout
 import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 CFG = json.loads(Path('/home/leo/.openclaw/workspace/tools/philips_tv_config.json').read_text())
 BASE = f"https://{CFG['host']}:1926/{CFG['api']}"
 AUTH = HTTPDigestAuth(CFG['user'], CFG['pass'])
+TV_HOST = CFG['host']
+TV_PORT = 1926
 
 APP_ALIASES = {
     'youtube': ['youtube'],
@@ -53,6 +58,10 @@ CHANNEL_ALIASES = {
 }
 
 
+class TvUnavailableError(RuntimeError):
+    pass
+
+
 def norm(text: str) -> str:
     text = text.lower().strip()
     text = text.replace('%', ' prozent ')
@@ -62,18 +71,60 @@ def norm(text: str) -> str:
     return re.sub(r'\s+', ' ', text).strip()
 
 
+def is_tv_reachable(timeout=1.5):
+    try:
+        with socket.create_connection((TV_HOST, TV_PORT), timeout=timeout):
+            return True
+    except OSError:
+        return False
+
+
+def unreachable_message():
+    return (
+        f'TV unreachable at {TV_HOST}:{TV_PORT} '
+        '(likely standby network sleep, WLAN drop, changed IP, or TV offline)'
+    )
+
+
+def api_request(method, path, payload=None, timeout=15):
+    try:
+        if method == 'GET':
+            r = requests.get(BASE + path, auth=AUTH, verify=False, timeout=timeout)
+        else:
+            r = requests.post(BASE + path, json=payload, auth=AUTH, verify=False, timeout=timeout)
+        r.raise_for_status()
+        if r.text.strip():
+            return r.json()
+        return None
+    except (ConnectTimeout, ReadTimeout) as exc:
+        raise TvUnavailableError(f'TV API timed out at {TV_HOST}:{TV_PORT}') from exc
+    except RequestsConnectionError as exc:
+        raise TvUnavailableError(unreachable_message()) from exc
+    except HTTPError as exc:
+        code = getattr(exc.response, 'status_code', None)
+        if code == 401:
+            raise TvUnavailableError('TV API auth failed; check philips_tv_config.json / pairing') from exc
+        raise TvUnavailableError(f'TV API HTTP error{f" {code}" if code else ""}') from exc
+
+
 def get(path, timeout=15):
-    r = requests.get(BASE + path, auth=AUTH, verify=False, timeout=timeout)
-    r.raise_for_status()
-    return r.json()
+    return api_request('GET', path, timeout=timeout)
 
 
 def post(path, payload, timeout=15):
-    r = requests.post(BASE + path, json=payload, auth=AUTH, verify=False, timeout=timeout)
-    r.raise_for_status()
-    if r.text.strip():
-        return r.json()
-    return None
+    return api_request('POST', path, payload=payload, timeout=timeout)
+
+
+def require_tv_reachable(timeout=1.5):
+    if not is_tv_reachable(timeout=timeout):
+        raise TvUnavailableError(unreachable_message())
+
+
+def try_or(default, fn):
+    try:
+        return fn()
+    except TvUnavailableError:
+        return default
 
 
 def get_values(names):
@@ -118,24 +169,29 @@ def ambilight_status():
 
 
 def power_off():
+    require_tv_reachable()
     # Keep Ambilight strictly opt-in. When we power the TV off,
     # also shut Ambilight down so it does not linger after standby.
-    try:
-        ambilight_power(False)
-    except Exception:
-        pass
+    try_or(None, lambda: ambilight_power(False))
     post('/powerstate', {'powerstate': 'Off'})
+    time.sleep(0.5)
     return {
-        'power': power_status(),
-        'ambilight_power': get('/ambilight/power').get('power', 'unknown')
+        'power': try_or('Off', power_status),
+        'ambilight_power': try_or('Off', lambda: get('/ambilight/power').get('power', 'unknown')),
+        'reachable': is_tv_reachable(),
     }
 
 
 def power_on():
-    state = power_status()
-    if state != 'On':
-        post('/input/key', {'key': 'Standby'})
-    return power_status()
+    require_tv_reachable()
+    post('/input/key', {'key': 'Standby'})
+    for _ in range(5):
+        time.sleep(1)
+        try:
+            return power_status()
+        except TvUnavailableError:
+            continue
+    return 'unknown'
 
 
 def fetch_apps():
@@ -259,9 +315,26 @@ def watch_tv(channel_query=None):
 
 
 def status():
-    vals = get_values(['contrast', 'video_contrast'])
-    vals['power'] = power_status()
-    vals['ambilight'] = ambilight_status()
+    vals = {
+        'reachable': is_tv_reachable(),
+        'host': TV_HOST,
+        'port': TV_PORT,
+    }
+    if not vals['reachable']:
+        vals['power'] = 'unknown'
+        vals['ambilight'] = {'power': 'unknown'}
+        vals['error'] = unreachable_message()
+        return vals
+
+    try:
+        vals.update(get_values(['contrast', 'video_contrast']))
+    except TvUnavailableError as exc:
+        vals['contrast'] = 'unavailable'
+        vals['video_contrast'] = 'unavailable'
+        vals['error'] = str(exc)
+
+    vals['power'] = try_or('unknown', power_status)
+    vals['ambilight'] = try_or({'power': 'unknown'}, ambilight_status)
     return vals
 
 
@@ -298,52 +371,56 @@ def handle_natural(text):
 
 
 def main(argv):
-    if len(argv) < 2:
-        print(json.dumps(status(), ensure_ascii=False))
-        return
-    if argv[1] in {'status', 'get'}:
-        print(json.dumps(status(), ensure_ascii=False))
-        return
-    if argv[1] == 'set' and len(argv) == 4:
-        name = argv[2]
-        if name not in CFG['nodes']:
-            raise SystemExit('valid names: contrast, video_contrast')
-        print(json.dumps({name: set_value(name, argv[3])}, ensure_ascii=False))
-        return
-    if argv[1] == 'power' and len(argv) >= 3:
-        action = norm(' '.join(argv[2:]))
-        if action in {'off', 'aus'}:
-            print(json.dumps(power_off(), ensure_ascii=False))
+    try:
+        if len(argv) < 2:
+            print(json.dumps(status(), ensure_ascii=False))
             return
-        if action in {'on', 'an', 'ein'}:
-            print(json.dumps({'power': power_on()}, ensure_ascii=False))
+        if argv[1] in {'status', 'get'}:
+            print(json.dumps(status(), ensure_ascii=False))
             return
-    if argv[1] == 'app' and len(argv) >= 3:
-        print(json.dumps({'app': launch_app(' '.join(argv[2:]))}, ensure_ascii=False))
-        return
-    if argv[1] == 'tv':
-        target = ' '.join(argv[2:]).strip() if len(argv) >= 3 else None
-        print(json.dumps({'channel': watch_tv(target)}, ensure_ascii=False))
-        return
-    if argv[1] == 'ambilight' and len(argv) >= 3:
-        sub = norm(argv[2])
-        rest = ' '.join(argv[3:]).strip()
-        if sub in {'on', 'an', 'ein'}:
-            print(json.dumps({'ambilight_power': ambilight_power(True)}, ensure_ascii=False))
+        if argv[1] == 'set' and len(argv) == 4:
+            name = argv[2]
+            if name not in CFG['nodes']:
+                raise SystemExit('valid names: contrast, video_contrast')
+            print(json.dumps({name: set_value(name, argv[3])}, ensure_ascii=False))
             return
-        if sub in {'off', 'aus'}:
-            print(json.dumps({'ambilight_power': ambilight_power(False)}, ensure_ascii=False))
+        if argv[1] == 'power' and len(argv) >= 3:
+            action = norm(' '.join(argv[2:]))
+            if action in {'off', 'aus'}:
+                print(json.dumps(power_off(), ensure_ascii=False))
+                return
+            if action in {'on', 'an', 'ein'}:
+                print(json.dumps({'power': power_on()}, ensure_ascii=False))
+                return
+        if argv[1] == 'app' and len(argv) >= 3:
+            print(json.dumps({'app': launch_app(' '.join(argv[2:]))}, ensure_ascii=False))
             return
-        if sub == 'video':
-            print(json.dumps({'ambilight': set_ambilight_video(rest or 'natural')}, ensure_ascii=False))
+        if argv[1] == 'tv':
+            target = ' '.join(argv[2:]).strip() if len(argv) >= 3 else None
+            print(json.dumps({'channel': watch_tv(target)}, ensure_ascii=False))
             return
-        if sub == 'audio':
-            print(json.dumps({'ambilight': set_ambilight_audio(rest or 'rhythm')}, ensure_ascii=False))
-            return
-        if sub == 'color':
-            print(json.dumps({'ambilight': set_ambilight_color(rest or 'deep water')}, ensure_ascii=False))
-            return
-    print(json.dumps(handle_natural(' '.join(argv[1:])), ensure_ascii=False))
+        if argv[1] == 'ambilight' and len(argv) >= 3:
+            sub = norm(argv[2])
+            rest = ' '.join(argv[3:]).strip()
+            if sub in {'on', 'an', 'ein'}:
+                print(json.dumps({'ambilight_power': ambilight_power(True)}, ensure_ascii=False))
+                return
+            if sub in {'off', 'aus'}:
+                print(json.dumps({'ambilight_power': ambilight_power(False)}, ensure_ascii=False))
+                return
+            if sub == 'video':
+                print(json.dumps({'ambilight': set_ambilight_video(rest or 'natural')}, ensure_ascii=False))
+                return
+            if sub == 'audio':
+                print(json.dumps({'ambilight': set_ambilight_audio(rest or 'rhythm')}, ensure_ascii=False))
+                return
+            if sub == 'color':
+                print(json.dumps({'ambilight': set_ambilight_color(rest or 'deep water')}, ensure_ascii=False))
+                return
+        print(json.dumps(handle_natural(' '.join(argv[1:])), ensure_ascii=False))
+    except TvUnavailableError as exc:
+        print(json.dumps({'ok': False, 'error': str(exc), 'host': TV_HOST, 'port': TV_PORT}, ensure_ascii=False))
+        raise SystemExit(2)
 
 
 if __name__ == '__main__':

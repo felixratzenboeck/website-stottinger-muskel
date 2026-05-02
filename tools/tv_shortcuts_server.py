@@ -85,9 +85,10 @@ def run_tv_command(args):
     proc = subprocess.run([
         'python3', TV_TOOL, *args
     ], capture_output=True, text=True, timeout=30)
+    stdout = (proc.stdout or '').strip()
     if proc.returncode != 0:
-        raise RuntimeError(proc.stderr.strip() or proc.stdout.strip() or f'Command failed: {proc.returncode}')
-    return proc.stdout.strip()
+        raise RuntimeError(stdout or proc.stderr.strip() or f'Command failed: {proc.returncode}')
+    return stdout
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -110,7 +111,7 @@ class Handler(BaseHTTPRequestHandler):
         qs = parse_qs(parsed.query)
 
         if parsed.path == '/health':
-            return self._send(200, json.dumps({'ok': True}))
+            return self._send(200, json.dumps({'ok': True, 'service': 'leo-tv-shortcuts'}))
 
         if parsed.path == '/':
             if not self._auth_ok(qs):

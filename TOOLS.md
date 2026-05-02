@@ -26,6 +26,9 @@
 
 - Philips TV im Telegram-Topic `Fernseher` ist gekoppelt und lokal steuerbar.
 - Modell: **55OLED903/12**
+- Zuletzt bekannte TV-IP: **192.168.0.131**
+- Zuletzt bekannte TV-MAC: **c4:98:5c:ad:6d:81**
+- TV wurde über die **Philips JointSpace API im lokalen Netz auf Port 1926** gefunden.
 - Primäres Steuer-Tool: `/home/leo/.openclaw/workspace/tools/philips_tv_control.py`
 - Skill: `/home/leo/.openclaw/workspace/skills/philips-tv-control/SKILL.md`
 - Unterstützt aktuell: Power, Apps (YouTube, DAZN/The Zone, Netflix, Spotify), TV/Sender (u. a. ORF1/2/3), Kontrast, Videokontrast, Ambilight.
@@ -35,6 +38,14 @@
   - grün/natur -> Fresh Nature
   - warmweiß -> Warm White
   - neutralweiß/kälteres Weiß -> Cool White
+- Wahrscheinlichste Ursache bei `No route to host` im selben LAN: **TV-Netzwerk schläft / Deep-Standby / WLAN-Hänger**, nicht echtes Host-Routing.
+- Recovery-Reihenfolge:
+  1. `python3 tools/philips_tv_control.py status`
+  2. Wenn `reachable=false` oder Verbindungsfehler: `ip neigh show 192.168.0.131` prüfen
+  3. Wenn TV im LAN weg ist: Strom-/Standby-/Netzwerk-Hänger am TV vermuten
+  4. Wenn IP gewechselt hat: `tools/philips_tv_config.json` updaten
+  5. Wenn Auth fehlschlägt oder TV reset wurde: neu pairen und Config aktualisieren
+- Im Router nach Möglichkeit **DHCP-Reservierung** für `192.168.0.131` auf TV-MAC `c4:98:5c:ad:6d:81` setzen.
 - Bei neuer TV-IP oder Re-Pairing zuerst `tools/philips_tv_config.json` prüfen.
 
 ## Browser Preference

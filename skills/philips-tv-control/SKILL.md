@@ -19,6 +19,13 @@ Konfiguration:
 
 Der TV ist bereits gekoppelt. Bevorzuge das lokale Python-Tool statt roher API-Requests.
 
+Discovery / letzter bekannter Zustand:
+
+- Modell: `55OLED903/12`
+- Letzte bekannte IP: `192.168.0.131`
+- Letzte bekannte MAC: `c4:98:5c:ad:6d:81`
+- API: Philips JointSpace auf Port `1926`
+
 ## Unterstützte Bereiche
 
 - Power: TV/Fernseher an, aus
@@ -108,7 +115,27 @@ Default für „Audio folgen“: `Rhythm`
 
 ## Wenn etwas kaputt geht
 
-- Prüfe erst `status`.
-- Wenn der TV nicht reagiert, kann IP oder Kopplung veraltet sein.
-- Bei geänderter TV-IP oder Reset muss ggf. neu gekoppelt und `philips_tv_config.json` aktualisiert werden.
-- Erst wenn das lokale Tool nicht reicht, wieder direkt gegen die Philips-API debuggen.
+- Prüfe zuerst:
+
+```bash
+python3 /home/leo/.openclaw/workspace/tools/philips_tv_control.py status
+```
+
+- Wenn `reachable=false` oder `TV unreachable` zurückkommt, ist im gleichen LAN meistens **nicht** das Host-Routing kaputt, sondern eher:
+  - TV in Deep-Standby
+  - TV-WLAN kurz weg
+  - TV-IP hat gewechselt
+- Nächster schneller Check:
+
+```bash
+ip neigh show 192.168.0.131
+```
+
+- Wenn dort `FAILED` / `INCOMPLETE` steht, ist es sehr wahrscheinlich ein TV-/Layer-2-/Standby-Problem.
+- Wenn die IP nicht mehr stimmt oder der TV im Router/ARP unter anderer IP auftaucht, `tools/philips_tv_config.json` aktualisieren.
+- Wenn Auth fehlschlägt oder der TV zurückgesetzt wurde, neu pairen und `user` / `pass` in der Config aktualisieren.
+- Für dauerhaft stabilere Erreichbarkeit bevorzugt:
+  - Ethernet statt WLAN
+  - Netzwerk-Standby / Quick Start am TV aktivieren
+  - DHCP-Reservierung für `192.168.0.131` auf `c4:98:5c:ad:6d:81`
+- Siehe auch: `references/recovery.md`
