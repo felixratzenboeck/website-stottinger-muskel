@@ -2,6 +2,7 @@
 /home/leo/.openclaw/plugin-runtime-deps
 /home/leo/.openclaw/cache
 /home/leo/.openclaw/media/inbound
+/home/leo/.openclaw/local-backups
 /home/leo/.openclaw/browser/openclaw/user-data/Default/Cache
 /home/leo/.openclaw/browser/openclaw/user-data/Default/Code Cache
 /home/leo/.openclaw/browser/openclaw/user-data/Default/GPUCache
