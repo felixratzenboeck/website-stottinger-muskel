@@ -71,7 +71,7 @@
 
 ## Boxen / AirPlay
 
-- Debian-PC ist jetzt als **AirPlay-Empfänger** für Felixs MacBook eingerichtet.
+- Debian-PC ist jetzt als **AirPlay-Empfänger** für Felixs MacBook/iPhone eingerichtet.
 - Sichtbarer Empfängername im Netzwerk: **`Leo Boxen`**
 - Dienste: `shairport-sync` + `avahi-daemon`
 - Audio-Ausgabe: Onboard-Analogausgang `hw:0,0` (ALC887-VD Analog)
@@ -79,6 +79,11 @@
   - `status`
   - `verbinden` / `connect` / `restart`
   - `trennen` / `disconnect` / `stop`
+- Tailscale-Shortcut-Server für Handyzugriff:
+  - Basis: `http://100.125.38.70:8767/`
+  - Konfiguration/Token: `/home/leo/.openclaw/workspace/tools/airplay_shortcuts_config.json`
+  - Direktlinks/Web-UI: `/home/leo/.openclaw/workspace/tools/airplay_shortcuts_urls.txt`
+  - Dienst: `leo-airplay-shortcuts.service`
 - Wenn Felix sagt **"Boxen verbinden"**, zuerst das Hilfsskript mit `verbinden` nutzen und danach kurz den Status prüfen.
 
 ## Gemini CLI
