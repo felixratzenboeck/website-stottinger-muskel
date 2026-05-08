@@ -19,10 +19,16 @@ The purpose is to improve context quality, reduce one-sided conclusions, and sur
 2. Run a first deep research pass with **Gemini Deep Research**.
    - Use Felix's Gemini account/session when needed.
    - If browser access is required, complete that in the browser rather than asking Felix for manual steps unless blocked.
-   - Use the best available Gemini model/workflow that still keeps turnaround time reasonable.
+   - Prefer the strongest realistic Gemini path in this order:
+     1. Gemini via browser/UI deep research when available
+     2. Gemini via ACP/runtime integration
+     3. `gemini -p` / `gemini -i` CLI fallback
+   - If Gemini ACP/session startup rejects config options (for example timeout/session config mismatches), retry without those optional ACP config fields instead of treating the whole workflow as blocked.
+   - If Gemini is temporarily degraded (for example repeated 5xx/backend errors), explicitly mark the Gemini pass as degraded and continue with the best available fallback.
 3. Run a second independent pass with **ChatGPT Deep Research**.
    - Use the available ChatGPT workspace/session.
    - Use the best available ChatGPT model/workflow that still keeps turnaround time reasonable.
+   - If the normal deep-research path is unavailable in the current runtime, fall back to a separate source-grounded web research pass and clearly label it as a fallback rather than silently claiming full deep-research parity.
 4. Compare both passes and identify:
    - strong agreements
    - important disagreements
@@ -37,6 +43,7 @@ The purpose is to improve context quality, reduce one-sided conclusions, and sur
 - Optimize for a high-confidence result with clean time bounds, not maximum waiting.
 - If a platform offers multiple deep-research modes, prefer the best one that is realistically fast enough for an interactive request.
 - If one side is temporarily blocked or degraded, say so explicitly rather than silently downgrading quality.
+- Do not let ACP/session plumbing failures be the stopping point when a browser or CLI fallback can still complete the research.
 
 ## Output expectations
 
@@ -56,3 +63,4 @@ When reporting back, prefer this structure:
 - Do not present weakly supported claims as facts.
 - Treat Gemini and ChatGPT as genuinely independent passes; do not collapse them into one source.
 - If the second pass materially changes the conclusion, say so clearly.
+- When a fallback path was used, state exactly which fallback was used and how that affects confidence.
