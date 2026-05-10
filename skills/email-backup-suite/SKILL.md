@@ -51,26 +51,61 @@ Safe default backup policy:
 ## Recommended automation implementation
 Use a user-level systemd service + timer.
 
-### Service
+### Live implementation on this host
+- sync script: `~/.local/bin/email-backup-sync`
+- sync service: `~/.config/systemd/user/email-backup.service`
+- sync timer: `~/.config/systemd/user/email-backup.timer`
+- health script: `~/.local/bin/email-backup-healthcheck`
+- health service: `~/.config/systemd/user/email-backup-health.service`
+- health timer: `~/.config/systemd/user/email-backup-health.timer`
+
+The sync script is more robust than a raw `mbsync gmail gmx` call:
+- uses `flock` to prevent overlapping runs
+- syncs only accounts that currently have usable secret files
+- runs `notmuch new` after sync
+- exits cleanly when Gmail is not fully configured yet
+
+### Sync service
 `~/.config/systemd/user/email-backup.service`
 ```ini
 [Unit]
 Description=Email backup sync for Gmail and GMX
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=/bin/bash -lc 'mbsync gmail gmx && notmuch new'
+ExecStart=/home/leo/.local/bin/email-backup-sync
+Nice=10
+IOSchedulingClass=best-effort
 ```
 
-### Timer
+### Sync timer
 `~/.config/systemd/user/email-backup.timer`
 ```ini
 [Unit]
 Description=Run email backup regularly
 
 [Timer]
-OnBootSec=5min
-OnUnitActiveSec=15min
+OnBootSec=10min
+OnUnitActiveSec=30min
+RandomizedDelaySec=3min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+```
+
+### Health timer
+`~/.config/systemd/user/email-backup-health.timer`
+```ini
+[Unit]
+Description=Weekly email-backup health check
+
+[Timer]
+OnBootSec=20min
+OnUnitActiveSec=7d
+RandomizedDelaySec=30min
 Persistent=true
 
 [Install]
@@ -80,7 +115,7 @@ WantedBy=timers.target
 ### Enable
 ```bash
 systemctl --user daemon-reload
-systemctl --user enable --now email-backup.timer
+systemctl --user enable --now email-backup.timer email-backup-health.timer
 systemctl --user list-timers --all | grep email-backup
 ```
 
@@ -97,13 +132,15 @@ systemctl --user list-timers --all | grep email-backup
 10. enable timer
 
 ## Verification commands
-- sync now: `mbsync gmail gmx`
+- sync now: `~/.local/bin/email-backup-sync`
 - rebuild index: `notmuch new`
 - show timers: `systemctl --user list-timers --all | grep email-backup`
 - disk free: `df -h ~`
 - mail size: `du -sh ~/.local/share/mail ~/.local/share/mail/backup/* 2>/dev/null`
 - recent unread: `notmuch search --output=summary tag:unread`
-- folders via Himalaya: `himalaya folders`
+- folders via Himalaya: `himalaya folder list --account gmx`
+- Himalaya config sanity: `himalaya account list`
+- GMX end-to-end check: `himalaya account doctor gmx`
 
 ## Safe maintenance policy
 Do not auto-delete backed-up mail by default.
@@ -130,6 +167,7 @@ Safe first steps:
 - decide whether Spam/Trash should be excluded from sync
 - decide whether sent mail / archives should stay complete
 - consider longer sync interval if churn is high
+- consult the weekly health snapshot at `~/.local/state/email-backup/health-latest.txt`
 
 Not recommended by default:
 - deleting mail from backup automatically
@@ -153,6 +191,12 @@ Typical workflow:
 
 ## Group/privacy rule
 If the current surface is a group chat, avoid dumping sensitive email contents unless Felix clearly wants that there. For broad summaries, keep it concise. For secret-bearing mail or account/security mail, prefer caution.
+
+## Current host notes
+- `mbsync`, `notmuch`, and a prebuilt `himalaya` binary are installed.
+- GMX is live and has already synced successfully on this host.
+- Gmail config exists, but automated Gmail sync only becomes active once `~/.mail-secrets/gmail-app-password` exists.
+- The sync script intentionally skips Gmail until that file is present, so GMX keeps working without noisy failures.
 
 ## Extension rule
 When new email-backup knowledge, paths, service names, quirks, or recovery steps appear, update this skill instead of letting the knowledge stay only in chat.
