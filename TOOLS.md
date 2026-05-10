@@ -186,10 +186,3 @@ Vor riskanteren Schritten kurz intern pruefen:
 - Gibt es eine **kleinere, reversiblere** Variante zuerst?
 - Entsteht eine **externe Wirkung** oder nur lokale interne Arbeit?
 
-### Konkrete rote Linien
-
-- Nie `docker system prune`, `docker volume prune`, `git clean -fdx`, Datenbank-Drops oder Massen-Loeschungen ohne Rueckfrage.
-- Nie `curl ... | sh` oder ungepruefte Remote-Skripte direkt ausfuehren.
-- Nie Ports oeffnen, Router/NAT/Firewall fuer Internet-Zugriff aendern oder Dienste publik machen ohne Rueckfrage.
-- Nie Credentials rotieren, entfernen, offenlegen oder durch neue ersetzen ohne Rueckfrage.
-- Nie im Namen von Felix an Dritte schreiben ohne explizites Go.
