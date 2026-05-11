@@ -56,13 +56,16 @@
 
 ## Personal Browser Isolation
 
-- **Nie** Felixs normalen manuellen Chrome-/Brave-Profile für Leo-Automation anfassen, wenn es vermeidbar ist.
-- Kein Attach, kein Start/Stop, kein Remote-Debugging und keine Session-Manipulation auf Felixs Alltags-Browsern als Standardweg.
-- Standard für login-sensitive Browserarbeit ist ein **separater Leo-Browser** mit eigenem Profil / eigener User-Data-Dir.
-- Auf dem Mac-Node ist der bevorzugte Leo-Browser der **managed OpenClaw-Browser**; dessen Profil ist getrennt von Felixs normalem Browser.
-- Wenn eine Seite Login braucht, soll Felix sich **im separaten Leo-Browser** einloggen, nicht im normalen Alltagsbrowser für Leo-Zwecke.
+- Felixs normaler manueller Chrome/Brave bleibt **standardmäßig unangetastet**.
+- **Default-Regel:** Wenn Leo selbstständig Browser-Arbeit startet, nimmt Leo einen **separaten Leo-Browser** mit eigenem Profil / eigener User-Data-Dir.
+- Für normale autonome Browserarbeit ist der Default der **managed OpenClaw-Browser** im getrennten Leo-Profil.
+- Wenn eine sichtbare manuelle Login-/Bestätigungsaktion von Felix nötig ist, ist auf dem Mac-Node der bevorzugte Leo-Browser der **managed OpenClaw-Browser**; dessen Profil ist getrennt von Felixs normalem Browser.
+- **Explizite Ausnahme:** Wenn Felix ausdrücklich sagt, dass Leo etwas in seinem echten Browser / seiner echten Session erledigen soll, darf Leo das gezielt tun.
+- Ohne so eine explizite Ansage: kein Attach, kein Start/Stop, kein Remote-Debugging und keine Session-Manipulation auf Felixs Alltags-Browsern.
+- Wenn eine Seite Login braucht, soll Felix sich für Leo-Zwecke nach Möglichkeit **im separaten Leo-Browser** einloggen, nicht im normalen Alltagsbrowser.
 - **Secrets/Codes nie im Gruppenchat anfordern oder wiederholen.** Wenn ein einmaliger Code sichtbar wird, soll Leo ihn direkt lokal übernehmen statt ihn chatten zu lassen.
-- Attach an Felixs echte Brave-/Chrome-Session ist nur ein expliziter Sonderfall und **nicht** der Default.
+- Attach an Felixs echte Brave-/Chrome-Session ist ein **bewusster Sonderfall**, nicht der Default.
+- Skill für diesen Standard-Workflow: `/home/leo/.openclaw/workspace/skills/separate-browser-ops/SKILL.md`
 
 ## TV Shortcut API
 
