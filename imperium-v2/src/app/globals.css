@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+/* Light mode overrides */
+.light-mode {
+  --bg: #faf9f6;
+  --text: #050505;
+  --surface: rgba(0,0,0,0.04);
+  --surface-strong: rgba(0,0,0,0.08);
+  --muted: rgba(5,5,5,0.65);
+  --gold: #8b5e00;
+  --gold-glow: rgba(139,94,0,0.15);
+  --gold-soft: #4b3800;
+  --crimson: #b22222;
+  --crimson-glow: rgba(178,34,34,0.2);
+}
+
 :root {
   --bg: #050505;
   --surface: rgba(255, 255, 255, 0.04);

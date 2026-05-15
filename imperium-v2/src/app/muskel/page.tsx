@@ -6,6 +6,11 @@ export default function MuskelPage() {
     <main className="relative min-h-screen overflow-hidden bg-[var(--bg)] text-[var(--text)]">
       {/* Header */}
       <header className="sticky top-0 z-10 border-b border-white/5 bg-[rgba(5,5,5,0.7)] backdrop-blur-2xl px-6 py-4 flex items-center justify-between">
+          {/* Theme & Language Toggles */}
+          <div className="flex gap-4 items-center">
+            <button onClick={() => document.documentElement.classList.toggle('light-mode')} className="px-2 py-1 text-sm bg-white/10 rounded text-white hover:bg-white/20">{typeof window !== 'undefined' && document.documentElement.classList.contains('light-mode') ? 'Dark' : 'Light'}</button>
+            <button id="lang-toggle" className="px-2 py-1 text-sm bg-white/10 rounded text-white hover:bg-white/20">DE/EN</button>
+          </div>
         <div className="flex items-center gap-3">
           <Link href="/" className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--gold)]/30 bg-white/5 text-[var(--gold)]">
             <ArrowLeft className="h-5 w-5" />
