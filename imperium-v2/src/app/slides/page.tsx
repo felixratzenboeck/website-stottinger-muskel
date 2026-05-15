@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Cat, Crown, Gem, Layers3, Sparkles, Star, Cpu, Terminal, Shield, Zap } from "lucide-react";
+import { ArrowLeft, ArrowRight, Cat, Crown, Gem, Layers3, Sparkles, Star, Cpu, Terminal, Shield, Zap, BadgeCheck } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
@@ -97,7 +97,7 @@ const slides: Slide[] = [
   },
 ];
 
-const BadgeCheck = (props: any) => <Shield {...props} />; // Fallback if BadgeCheck from lucide is missing or similar
+// Removed fallback; using BadgeCheck from lucide-react
 
 export default function SlidesPage() {
   const [index, setIndex] = useState(0);
