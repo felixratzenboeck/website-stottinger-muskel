@@ -78,6 +78,7 @@ export default function Home() {
               <a href="#architektur" className="transition hover:text-[var(--gold)]">Architektur</a>
               <a href="#rollen" className="transition hover:text-[var(--gold)]">Rollen</a>
               <a href="#statuten" className="transition hover:text-[var(--gold)]">Statuten</a>
+              <a href="/muskel" className="transition hover:text-[var(--gold)]">Muskel‑Bindegewebe</a>
             </nav>
             <Link
               href="/slides"
