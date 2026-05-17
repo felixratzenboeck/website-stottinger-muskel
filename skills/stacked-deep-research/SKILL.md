@@ -23,7 +23,8 @@ The purpose is to improve context quality, reduce one-sided conclusions, and sur
      1. Gemini via browser/UI deep research when available
      2. Gemini via ACP/runtime integration
      3. `gemini -p` / `gemini -i` CLI fallback
-   - If Gemini ACP/session startup rejects config options (for example timeout/session config mismatches), retry without those optional ACP config fields instead of treating the whole workflow as blocked.
+   - If Gemini ACP/session startup rejects config options (for example `thinking=high`, timeout/session config mismatches, or unsupported `session/set_config_option` keys), retry without those optional ACP config fields instead of treating the whole workflow as blocked.
+   - If ACP rejects `thinking=high`, do not ask Felix to confirm a downgrade; continue with Gemini CLI fallback (`gemini -i` for sustained research, `gemini -p` for a concise one-shot prompt) and label the Gemini pass as a fallback.
    - If Gemini is temporarily degraded (for example repeated 5xx/backend errors), explicitly mark the Gemini pass as degraded and continue with the best available fallback.
 3. Run a second independent pass with **ChatGPT Deep Research**.
    - Use the available ChatGPT workspace/session.
@@ -44,6 +45,7 @@ The purpose is to improve context quality, reduce one-sided conclusions, and sur
 - If a platform offers multiple deep-research modes, prefer the best one that is realistically fast enough for an interactive request.
 - If one side is temporarily blocked or degraded, say so explicitly rather than silently downgrading quality.
 - Do not let ACP/session plumbing failures be the stopping point when a browser or CLI fallback can still complete the research.
+- For the current OpenClaw host, `thinking=high` is not a safe Gemini ACP config option; omit it for ACP spawns.
 
 ## Output expectations
 
@@ -54,6 +56,8 @@ When reporting back, prefer this structure:
 - Where the passes disagree
 - What remains uncertain
 - Recommended next step
+
+Keep the report concise and understandable for Felix as a non-programmer. Do not paste raw research transcripts, code, long tables, file contents, JSON, logs, or technical dumps unless Felix explicitly asks for them.
 
 ## Notes
 

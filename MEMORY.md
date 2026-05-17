@@ -10,6 +10,7 @@
 ## Felix
 
 - Felix Ratzenböck möchte klare, direkte Antworten ohne unnötige Umwege.
+- Felix ist kein Programmierer und möchte keine Codeblöcke, Rohdateien, Diffs, Logs oder langen technischen Ausgaben im Chat sehen, außer er fragt ausdrücklich danach. Antworten sollen kurz, normal verständlich und in Alltagssprache sein.
 - Wenn ich IP-Adressen oder Hosting-Adressen nenne, verwende ich für ihn standardmäßig die Tailscale-IP statt lokaler LAN-IP-Adressen.
 - Aktuelle Tailscale-IP: 100.125.38.70
 

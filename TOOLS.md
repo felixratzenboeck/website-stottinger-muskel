@@ -110,7 +110,7 @@
 - Wenn Felix etwas mit **Webseite**, **UI**, **Design**, **Landingpage**, **Mockup**, **Branding**, **mach es schön** oder allgemein etwas visuell Anspruchsvolles will, dann standardmaessig **Gemini Seal I** zuerst verwenden.
 - Diese Kategorie gilt als **harte Default-Regel**: bei solcher Arbeit nicht erst abwarten, sondern standardmaessig direkt mit Gemini anfangen, ausser Felix will explizit einen anderen Weg.
 - OpenClaw-ACP-Routing dafuer: `runtime: "acp"`, `agentId: "gemini"`.
-- Wichtige Stabilitaetsnotiz: Gemini-ACP-Subagents auf diesem Host aktuell **ohne** `timeoutSeconds` / `runTimeoutSeconds` starten. Mit Timeout kann der ACP-Adapter an `session/set_config_option` fuer `timeout` scheitern. Wenn ein harter Timeout gebraucht wird, lieber native Subagents nehmen oder ACP ohne Timeout starten und separat ueberwachen.
+- Wichtige Stabilitaetsnotiz: Gemini-ACP-Subagents auf diesem Host aktuell **ohne** optionale `thinking`-/Timeout-Overrides starten, insbesondere ohne `thinking=high`, `timeoutSeconds` oder `runTimeoutSeconds`. Diese Optionen koennen am ACP-Adapter via `session/set_config_option` scheitern. Wenn hoehere Denktiefe oder ein harter Timeout gebraucht wird, lieber native Subagents nehmen oder `gemini -i` / `gemini -p` als CLI-Fallback separat ueberwachen.
 - Fuer diese Design-/Website-Aufgaben moeglichst **kein anderer Agent zuerst**, ausser Felix sagt es ausdruecklich anders.
 - Wenn der aktuelle Workspace-/Chat-Kontext knapp wird, auslaeuft oder fuer die Aufgabe zu klein ist, **nicht stehenbleiben**: standardmaessig Gemini als Fortsetzungsweg nutzen.
 - Fallback-Reihenfolge bei Kontextdruck:

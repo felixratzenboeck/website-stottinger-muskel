@@ -64,10 +64,12 @@ For website/UI/app generation:
 - If Felix says `OCP` but the context is clearly agent-protocol/sub-agent work, treat it as ACP unless Felix says otherwise.
 - If Felix says `Gemini Seal I` / `Seal-Eye`, interpret that as: launch **Gemini CLI via ACP**.
 - For design/website/beautiful-output requests, prefer ACP launches over plain `gemini -p` one-shots unless the task is obviously tiny.
-- Important host-specific note: on this host, Gemini ACP sessions can currently fail if `sessions_spawn` passes `timeoutSeconds` / `runTimeoutSeconds`, because the ACP adapter rejects the `session/set_config_option` timeout option. For Gemini ACP spawns here, omit per-spawn timeouts unless/until the adapter is updated. If strict timeout control is needed, prefer native subagents or supervise the ACP run without setting a timeout option.
+- Important host-specific note: on this host, Gemini ACP sessions can currently fail if `sessions_spawn` passes optional config options that the adapter rejects via `session/set_config_option`, including `thinking=high`, `timeoutSeconds`, and `runTimeoutSeconds`. For Gemini ACP spawns here, omit per-spawn thinking/timeout options unless/until the adapter is updated. If strict timeout control or a higher thinking budget is needed, prefer native subagents or supervise a `gemini -i` / `gemini -p` CLI fallback instead of setting ACP config options.
 
 ## Reporting back
 
 - Be explicit when Gemini was used.
 - Summarize the useful result, not the raw transcript.
+- For Felix, never paste Gemini's generated source code, file contents, diffs, logs, or long technical output into chat unless Felix explicitly asks for it.
+- When Gemini builds or edits a website/app, report only the plain-language result, the URL/path to open, and any simple next step.
 - If Gemini fails, continue locally instead of stalling.
