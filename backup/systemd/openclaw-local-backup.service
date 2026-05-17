@@ -1,6 +1,0 @@
-[Unit]
-Description=OpenClaw local encrypted fallback backup
-
-[Service]
-Type=oneshot
-ExecStart=%h/.openclaw/workspace/backup/run-local-restic-backup.sh

@@ -1,6 +1,0 @@
-[Unit]
-Description=OpenClaw autosync to GitHub and Google Drive backup
-
-[Service]
-Type=oneshot
-ExecStart=%h/.openclaw/workspace/backup/run-openclaw-autosync.sh
