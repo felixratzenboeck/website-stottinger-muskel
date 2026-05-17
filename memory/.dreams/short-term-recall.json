@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "updatedAt": "2026-05-17T11:20:54.730Z",
+  "entries": {
+    "memory:memory/2026-05-01.md:10:16": {
+      "key": "memory:memory/2026-05-01.md:10:16",
+      "path": "memory/2026-05-01.md",
+      "startLine": 10,
+      "endLine": 16,
+      "source": "memory",
+      "snippet": "- Local prep was reportedly completed earlier in-session (restic/rclone/git/sqlite3, backup scripts, restore path, timer files, local git repo), but the setup is not complete until the rclone authorize token is provided as plain text and Google Drive is actually connected. - Felix prefers Brave as the default browser; when browser attach tried Chrome, he explicitly corrected this. - Philips-TV-Tool angepasst: Beim Befehl zum Ausschalten wird Ambilight jetzt ebenfalls explizit ausgeschaltet, damit es nicht von selbst weiterleuchtet. - Onboard-Audio auf dem Debian-PC nach BIOS-Aktivierung erkannt (Intel HDA / ALC887-VD Analog). AirPlay-Empfänger `Leo Boxen` mit `shairport-sync` + `avahi-daemon",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.464192721247673,
+      "maxScore": 0.464192721247673,
+      "firstRecalledAt": "2026-05-17T11:20:54.730Z",
+      "lastRecalledAt": "2026-05-17T11:20:54.730Z",
+      "queryHashes": [
+        "e22586930a5b"
+      ],
+      "recallDays": [
+        "2026-05-17"
+      ],
+      "conceptTags": [
+        "backup",
+        "in-session",
+        "restic/rclone/git/sqlite3",
+        "philips-tv-tool",
+        "onboard-audio",
+        "debian-pc",
+        "bios-aktivierung",
+        "alc887-vd"
+      ]
+    },
+    "memory:memory/2026-05-08.md:1:7": {
+      "key": "memory:memory/2026-05-08.md:1:7",
+      "path": "memory/2026-05-08.md",
+      "startLine": 1,
+      "endLine": 7,
+      "source": "memory",
+      "snippet": "# 2026-05-08 - Heartbeat found fresh TeamCal work on branch `work/google-first-pivot-plan`; `pnpm run typecheck` passed. - Saved and pushed the new TeamCal checkpoint commit `a7e3adf` (`checkpoint: preserve TeamCal google-first pivot work`) to `origin/work/google-first-pivot-plan` so the branch is backed up remotely. - Heartbeat caught a transient `openclaw-autosync.service` failure at 09:56 caused by `restic` timing out talking to the local rclone HTTP bridge (`context deadline exceeded`). - Manually reran `backup/run-openclaw-autosync.sh` at 10:21; it completed successfully, and the autosync failed state was cleared.",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.44957589805126186,
+      "maxScore": 0.44957589805126186,
+      "firstRecalledAt": "2026-05-17T11:20:54.730Z",
+      "lastRecalledAt": "2026-05-17T11:20:54.730Z",
+      "queryHashes": [
+        "e22586930a5b"
+      ],
+      "recallDays": [
+        "2026-05-17"
+      ],
+      "conceptTags": [
+        "backup",
+        "work/google-first-pivot-plan",
+        "google-first",
+        "openclaw-autosync.service",
+        "backup/run-openclaw-autosync.sh",
+        "heartbeat",
+        "found",
+        "fresh"
+      ]
+    },
+    "memory:memory/2026-05-04.md:1:13": {
+      "key": "memory:memory/2026-05-04.md:1:13",
+      "path": "memory/2026-05-04.md",
+      "startLine": 1,
+      "endLine": 13,
+      "source": "memory",
+      "snippet": "# 2026-05-04 - Für das Projekt `projects/TeamCal` wurde eine Handoff-Datei angelegt: `projects/TeamCal/LEO_HANDOFF.md`. - Zweck: neue Sessions sollen den Arbeitsstand unabhängig vom Chat-Verlauf sauber wieder aufnehmen können. - Dokumentiert wurden Projektpfad, Git-Stand, offene Änderung in `artifacts/calendar-dashboard/vite.config.ts` und ein empfohlener Start-Prompt für die nächste Session. - Morning heartbeat checks: autosync/local backup timers are active and healthy; no failed user units. - Heartbeat check found active uncommitted TeamCal work on branch `work/continue-app-2026-05-04` (multiple app/UI/api files modified, plus new `artifacts/calendar-dashboard/src/pages/team.tsx`). - Te",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.44942110478878017,
+      "maxScore": 0.44942110478878017,
+      "firstRecalledAt": "2026-05-17T11:20:54.730Z",
+      "lastRecalledAt": "2026-05-17T11:20:54.730Z",
+      "queryHashes": [
+        "e22586930a5b"
+      ],
+      "recallDays": [
+        "2026-05-17"
+      ],
+      "conceptTags": [
+        "backup",
+        "projects/teamcal",
+        "handoff-datei",
+        "projects/teamcal/leo-handoff.md",
+        "chat-verlauf",
+        "git-stand",
+        "start-prompt",
+        "autosync/local"
+      ]
+    },
+    "memory:memory/2026-05-09.md:1:5": {
+      "key": "memory:memory/2026-05-09.md:1:5",
+      "path": "memory/2026-05-09.md",
+      "startLine": 1,
+      "endLine": 5,
+      "source": "memory",
+      "snippet": "# 2026-05-09 - Heartbeat found fresh TeamCal work again on `work/google-first-pivot-plan`; `pnpm run typecheck` passed. - Saved and pushed TeamCal checkpoint commit `6caa931` (`checkpoint: preserve TeamCal google-first execution work`) to `origin/work/google-first-pivot-plan` so the new Google-first execution work is backed up remotely.",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.4491334646940231,
+      "maxScore": 0.4491334646940231,
+      "firstRecalledAt": "2026-05-17T11:20:54.730Z",
+      "lastRecalledAt": "2026-05-17T11:20:54.730Z",
+      "queryHashes": [
+        "e22586930a5b"
+      ],
+      "recallDays": [
+        "2026-05-17"
+      ],
+      "conceptTags": [
+        "work/google-first-pivot-plan",
+        "google-first",
+        "heartbeat",
+        "found",
+        "fresh",
+        "teamcal",
+        "google",
+        "first"
+      ]
+    },
+    "memory:memory/2026-05-10.md:1:10": {
+      "key": "memory:memory/2026-05-10.md:1:10",
+      "path": "memory/2026-05-10.md",
+      "startLine": 1,
+      "endLine": 10,
+      "source": "memory",
+      "snippet": "# 2026-05-10 - Heartbeat found more TeamCal backend progress on `work/google-first-pivot-plan`; `pnpm run typecheck` passed. - Saved and pushed TeamCal checkpoint commit `9de2be0` (`checkpoint: preserve TeamCal availability backend work`) to `origin/work/google-first-pivot-plan` so the latest availability/backend work is backed up remotely. - Heartbeat found fresh `aw-importer-whoop` work on `main`; `python3 -m compileall src tests` passed as a lightweight syntax gate. - Saved `aw-importer-whoop` checkpoint commit `c704a8f` (`checkpoint: preserve whoop daily sync work`). Push to `origin/main` failed with GitHub 403 because `felixratzenboeck` has no write permission to `Martin-Hausleitner/aw",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.4476379781961441,
+      "maxScore": 0.4476379781961441,
+      "firstRecalledAt": "2026-05-17T11:20:54.730Z",
+      "lastRecalledAt": "2026-05-17T11:20:54.730Z",
+      "queryHashes": [
+        "e22586930a5b"
+      ],
+      "recallDays": [
+        "2026-05-17"
+      ],
+      "conceptTags": [
+        "work/google-first-pivot-plan",
+        "availability/backend",
+        "aw-importer-whoop",
+        "origin/main",
+        "martin-hausleitner/aw",
+        "heartbeat",
+        "found",
+        "teamcal"
+      ]
+    }
+  }
+}
